@@ -48,6 +48,10 @@ public class SecondaryController {
         System.out.println("Apodo guardado: " + nickname);
 
         // Aquí luego se puede pasar a la pantalla del juego
-        // App.setRoot("game");
+     try {
+    App.setRoot("levels");
+} catch (IOException e) {
+    e.printStackTrace();
+}
     }
 }
