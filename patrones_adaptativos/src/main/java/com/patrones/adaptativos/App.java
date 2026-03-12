@@ -8,27 +8,32 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- * Prueba final github
- */
 public class App extends Application {
 
     private static Scene scene;
 
-@Override
-public void start(@SuppressWarnings("exports") Stage stage) throws IOException {
-    scene = new Scene(loadFXML("primary"), 640, 800);
-    stage.setScene(scene);
-    stage.setTitle("Patrones Adaptativos");
-    stage.show();
-}
+    // VARIABLE PARA SABER QUE NIVEL ELIGIÓ EL JUGADOR
+    public static int nivelSeleccionado = 1;
+
+    @Override
+    public void start(Stage stage) throws IOException {
+
+        scene = new Scene(loadFXML("primary"), 640, 800);
+
+        stage.setScene(scene);
+        stage.setTitle("Patrones Adaptativos");
+        stage.show();
+    }
 
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                App.class.getResource(fxml + ".fxml"));
+
         return fxmlLoader.load();
     }
 

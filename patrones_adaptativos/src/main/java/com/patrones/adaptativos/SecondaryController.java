@@ -14,22 +14,15 @@ public class SecondaryController {
     @FXML
     private Label errorLabel;
 
-    /*
-     * Este método permite regresar a la ventana principal
-     * cuando el usuario presiona el botón de volver.
-     */
+    // Volver a la pantalla inicial
     @FXML
     private void switchToPrimary() throws IOException {
         App.setRoot("primary");
     }
 
-    /*
-     * Este método valida el apodo ingresado por el jugador.
-     * Debe cumplir las reglas: no vacío, máximo 10 caracteres
-     * y solo letras o números.
-     */
+    // Guardar apodo y pasar a niveles
     @FXML
-    private void guardarNickname() {
+    private void guardarNickname() throws IOException {
 
         String nickname = nicknameField.getText();
 
@@ -47,11 +40,7 @@ public class SecondaryController {
 
         System.out.println("Apodo guardado: " + nickname);
 
-        // Aquí luego se puede pasar a la pantalla del juego
-     try {
-    App.setRoot("levels");
-} catch (IOException e) {
-    e.printStackTrace();
-}
+        // AQUÍ ESTABA EL PROBLEMA
+        App.setRoot("levels");
     }
 }

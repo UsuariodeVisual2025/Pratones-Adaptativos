@@ -21,10 +21,10 @@
                 </font>
             </Label>
 
-            <Button prefHeight="52.0" prefWidth="250" text="Nivel 1 - Principiante" />
-            <Button prefHeight="52.0" prefWidth="250" text="Nivel 2 - Intermedio" />
-            <Button prefHeight="52.0" prefWidth="250" text="Nivel 3 - Difícil" />
-            <Button prefHeight="52.0" prefWidth="250" text="Nivel 4 - Experto" />
+            <Button onAction="#nivel1" prefHeight="52.0" prefWidth="211.0" text="Nivel 1 - Principiante" />
+            <Button onAction="#nivel2" prefHeight="52.0" prefWidth="210.0" text="Nivel 2 - Intermedio" />
+            <Button onAction="#nivel3" prefHeight="52.0" prefWidth="210.0" text="Nivel 3 - Difícil" />
+            <Button onAction="#nivel4" prefHeight="52.0" prefWidth="210.0" text="Nivel 4 - Experto" />
 
         </VBox>
     </center>
