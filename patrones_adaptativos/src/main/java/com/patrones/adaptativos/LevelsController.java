@@ -11,4 +11,23 @@ public class LevelsController {
         App.setRoot("secondary");
     }
 
+    @FXML
+    private void principiante() throws IOException {
+        App.setRoot("game");
+    }
+
+    @FXML
+    private void intermedio() throws IOException {
+        App.setRoot("game");
+    }
+
+    @FXML
+    private void avanzado() throws IOException {
+        App.setRoot("game");
+    }
+
+    @FXML
+    private void experto() throws IOException {
+        App.setRoot("game");
+    }
 }
