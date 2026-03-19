@@ -3,6 +3,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.control.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17"
@@ -11,10 +12,18 @@
             prefWidth="800" prefHeight="600"
             style="-fx-background-color:#ADD8E6">
 
+    <!-- Boton Volver -->
     <top>
-        <Label text="Patrones Adaptativos"
-               style="-fx-font-size:24px; -fx-font-weight:bold;"
-               BorderPane.alignment="CENTER"/>
+        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding:10;">
+            <Button text="← Volver" onAction="#volverNiveles"/>
+            
+            <Region HBox.hgrow="ALWAYS"/>
+            
+            <Label text="Patrones Adaptativos"
+                   style="-fx-font-size:24px; -fx-font-weight:bold;"/>
+            
+            <Region HBox.hgrow="ALWAYS"/>
+        </HBox>
     </top>
 
     <center>
