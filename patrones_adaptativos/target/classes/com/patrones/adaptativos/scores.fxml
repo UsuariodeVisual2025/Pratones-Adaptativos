@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.patrones.adaptativos.ScoresController"
+            prefWidth="800" prefHeight="600"
+            style="-fx-background-color:#ADD8E6">
+
+    <top>
+        <Button text="←" onAction="#volver" BorderPane.alignment="TOP_LEFT"/>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" spacing="20">
+
+            <Label text="PUNTAJES"
+                   style="-fx-font-size:24px; -fx-font-weight:bold;" />
+
+            <TableView fx:id="tablaScores" prefWidth="400">
+
+                <columns>
+                    <TableColumn text="Jugador" fx:id="colJugador"/>
+                    <TableColumn text="Puntaje" fx:id="colPuntaje"/>
+                </columns>
+
+            </TableView>
+
+        </VBox>
+    </center>
+
+</BorderPane>
