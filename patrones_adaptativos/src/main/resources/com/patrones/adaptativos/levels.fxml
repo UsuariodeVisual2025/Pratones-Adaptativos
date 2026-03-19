@@ -26,11 +26,11 @@
             <Button onAction="#nivel2" prefHeight="52.0" prefWidth="210.0" text="Nivel 2 - Intermedio" />
             <Button onAction="#nivel3" prefHeight="52.0" prefWidth="210.0" text="Nivel 3 - Difícil" />
             <Button onAction="#nivel4" prefHeight="52.0" prefWidth="210.0" text="Nivel 4 - Experto" />
-         <Button onAction="#puntajes" prefHeight="29.0" prefWidth="97.0" text="Puntajes">
+         <Button text="Ver Puntajes" onAction="#verPuntajes"/>
             <padding>
                <Insets right="5.0" />
             </padding>
-         </Button>
+         
          <opaqueInsets>
             <Insets top="5.0" />
          </opaqueInsets>

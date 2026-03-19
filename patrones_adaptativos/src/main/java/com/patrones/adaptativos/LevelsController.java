@@ -12,34 +12,31 @@ public class LevelsController {
 
     @FXML
     private void nivel1() throws IOException {
-
         App.nivelSeleccionado = 1;
         App.setRoot("game");
-
     }
 
     @FXML
     private void nivel2() throws IOException {
-
         App.nivelSeleccionado = 2;
         App.setRoot("game");
-
     }
 
     @FXML
     private void nivel3() throws IOException {
-
         App.nivelSeleccionado = 3;
         App.setRoot("game");
-
     }
-
+     // NUEVO NIVEL 4
     @FXML
     private void nivel4() throws IOException {
-
         App.nivelSeleccionado = 4;
         App.setRoot("game");
-
     }
 
+    //  ejecuta los niveles y luego muestra los puntajes
+    @FXML
+    private void verPuntajes() throws IOException {
+        App.setRoot("scores");
+    }
 }

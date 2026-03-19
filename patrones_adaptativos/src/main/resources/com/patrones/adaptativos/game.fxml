@@ -1,4 +1,12 @@
-<BorderPane xmlns:fx="http://javafx.com/fxml"
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.patrones.adaptativos.GameController"
             prefWidth="800" prefHeight="600"
             style="-fx-background-color:#ADD8E6">
@@ -12,7 +20,7 @@
     <center>
         <VBox spacing="15" alignment="CENTER">
 
-            <Label fx:id="patronLabel" text="2 4 6 ?" />
+            <Label fx:id="patronLabel" text="Nivel" />
 
             <TextField fx:id="respuestaField"
                        promptText="Ingresa el siguiente número"/>
@@ -25,9 +33,9 @@
             <TableView fx:id="tablaIntentos" prefWidth="400">
 
                 <columns>
-                    <TableColumn text="Intento" fx:id="colIntento"/>
-                    <TableColumn text="Respuesta" fx:id="colRespuesta"/>
-                    <TableColumn text="Resultado" fx:id="colResultado"/>
+                    <TableColumn fx:id="colIntento" text="Intento" prefWidth="100"/>
+                    <TableColumn fx:id="colRespuesta" text="Respuesta" prefWidth="150"/>
+                    <TableColumn fx:id="colResultado" text="Resultado" prefWidth="150"/>
                 </columns>
 
             </TableView>
