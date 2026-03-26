@@ -41,6 +41,8 @@ public class GameController {
     private int reglaActual;
     private int contadorRegla;
 
+    private int puntaje = 0; // 🔥 puntaje del jugador
+
     @FXML
     public void initialize() {
 
@@ -49,7 +51,6 @@ public class GameController {
             return;
         }
 
-        // TABLA
         colIntento.setCellValueFactory(data ->
                 new SimpleIntegerProperty(data.getValue().getIntento()).asObject());
 
@@ -63,7 +64,6 @@ public class GameController {
 
         cargarNivel();
 
-        // COLORES
         colResultado.setCellFactory(column -> new TableCell<Intento, String>() {
 
             @Override
@@ -98,6 +98,7 @@ public class GameController {
         reglaActual = 1;
         contadorRegla = 0;
         intentos = 0;
+        puntaje = 0; // 🔥 reinicia puntaje
 
         patronLabel.setText("Nivel " + nivel + ": " + patron);
     }
@@ -128,15 +129,15 @@ public class GameController {
 
         if (respuesta == esperado) {
 
+            puntaje += 10; // 🔥 suma puntos
+
             lista.add(new Intento(intentos,
                     String.valueOf(respuesta),
                     "Correcto"));
 
             valorActual = respuesta;
-
             contadorRegla++;
 
-            // 🔥 CAMBIO DE REGLA
             if (contadorRegla == 3) {
 
                 reglaActual++;
@@ -144,19 +145,21 @@ public class GameController {
 
                 if (reglaActual > 2) {
 
-                    patronLabel.setText("🎉 Nivel completado");
+                    patronLabel.setText("🎉 Nivel completado | Puntaje: " + puntaje);
+
+                    ScoresController.agregarScore(App.nombreJugador, puntaje); // 🔥 GUARDA SCORE
+
                     respuestaField.setDisable(true);
 
                 } else {
 
-                    // 🔥 NUEVA SECUENCIA (SIN TEXTO EXTRA)
                     String pista = Reglas.obtenerPista(
                             App.nivelSeleccionado,
                             valorActual,
                             reglaActual
                     );
 
-                  patronLabel.setText("🔄 Nueva regla → " + pista);
+                    patronLabel.setText("🔄 Nueva regla → " + pista);
                 }
 
             } else {
@@ -167,12 +170,19 @@ public class GameController {
 
         } else {
 
+            puntaje -= 5; // 🔥 resta puntos
+
             lista.add(new Intento(intentos,
                     String.valueOf(respuesta),
                     "Incorrecto"));
 
             if (intentos == 6) {
-                patronLabel.setText("❌ Perdiste el nivel");
+
+                patronLabel.setText("❌ Perdiste | Puntaje: " + puntaje);
+
+                ScoresController.agregarScore(App.nombreJugador, puntaje); // 🔥 GUARDA SCORE
+
+                respuestaField.setDisable(true);
             }
         }
 
@@ -185,6 +195,7 @@ public class GameController {
         intentos = 0;
         contadorRegla = 0;
         reglaActual = 1;
+        puntaje = 0; // 🔥 reinicia puntaje
 
         lista.clear();
         respuestaField.clear();

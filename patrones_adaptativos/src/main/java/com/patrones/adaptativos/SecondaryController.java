@@ -38,9 +38,10 @@ public class SecondaryController {
 
         errorLabel.setText("");
 
+        App.nombreJugador = nickname; // 🔥 CAMBIO: guarda el nombre para usarlo en todo el programa
+
         System.out.println("Apodo guardado: " + nickname);
 
-        // AQUÍ ESTABA EL PROBLEMA
         App.setRoot("levels");
     }
 }

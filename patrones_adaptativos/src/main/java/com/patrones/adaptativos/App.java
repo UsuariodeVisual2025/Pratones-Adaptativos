@@ -15,6 +15,8 @@ public class App extends Application {
     // VARIABLE PARA SABER QUE NIVEL ELIGIÓ EL JUGADOR
     public static int nivelSeleccionado = 1;
 
+    public static String nombreJugador;
+
     @Override
     public void start(Stage stage) throws IOException {
 
