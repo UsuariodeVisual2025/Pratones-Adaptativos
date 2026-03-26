@@ -36,12 +36,14 @@ public class GameController {
     private ObservableList<Intento> lista = FXCollections.observableArrayList();
 
     private int intentos = 0;
-    private int respuestaCorrecta;
+
+    private int valorActual;
+    private int reglaActual;
+    private int contadorRegla;
 
     @FXML
     public void initialize() {
 
-        // 🔥 VALIDACIÓN (evita crash silencioso)
         if (patronLabel == null || tablaIntentos == null) {
             System.out.println("Error: fx:id no conectados");
             return;
@@ -59,10 +61,9 @@ public class GameController {
 
         tablaIntentos.setItems(lista);
 
-        // 🔥 NIVELES (MÁS LIMPIO)
         cargarNivel();
 
-        // COLOR DE RESULTADOS
+        // COLORES
         colResultado.setCellFactory(column -> new TableCell<Intento, String>() {
 
             @Override
@@ -86,41 +87,25 @@ public class GameController {
         });
     }
 
-    // 🔥 MÉTODO NUEVO (MEJOR ORGANIZACIÓN)
     private void cargarNivel() {
 
-        switch (App.nivelSeleccionado) {
+        int nivel = App.nivelSeleccionado;
 
-            case 1:
-                patronLabel.setText("Nivel 1: 2 4 6 ?");
-                respuestaCorrecta = 8;
-                break;
+        String patron = Reglas.obtenerPatron(nivel);
 
-            case 2:
-                patronLabel.setText("Nivel 2: 3 6 12 ?");
-                respuestaCorrecta = 24;
-                break;
+        valorActual = Reglas.obtenerUltimoNumero(nivel);
 
-            case 3:
-                patronLabel.setText("Nivel 3: 1 1 2 3 ?");
-                respuestaCorrecta = 5;
-                break;
+        reglaActual = 1;
+        contadorRegla = 0;
+        intentos = 0;
 
-            case 4:
-                patronLabel.setText("Nivel 4: 5 10 20 40 ?");
-                respuestaCorrecta = 80;
-                break;
-
-            default:
-                patronLabel.setText("Nivel desconocido");
-                respuestaCorrecta = 0;
-        }
+        patronLabel.setText("Nivel " + nivel + ": " + patron);
     }
 
     @FXML
     private void comprobar() {
 
-        if (intentos >= 3) {
+        if (intentos >= 6) {
             return;
         }
 
@@ -135,16 +120,50 @@ public class GameController {
 
         intentos++;
 
-        if (respuesta == respuestaCorrecta) {
+        int esperado = Reglas.aplicarRegla(
+                App.nivelSeleccionado,
+                valorActual,
+                reglaActual
+        );
+
+        if (respuesta == esperado) {
 
             lista.add(new Intento(intentos,
                     String.valueOf(respuesta),
                     "Correcto"));
 
-            respuestaField.setDisable(true);
+            valorActual = respuesta;
 
-            // 🔥 MENSAJE PRO
-            System.out.println("¡Nivel completado!");
+            contadorRegla++;
+
+            // 🔥 CAMBIO DE REGLA
+            if (contadorRegla == 3) {
+
+                reglaActual++;
+                contadorRegla = 0;
+
+                if (reglaActual > 2) {
+
+                    patronLabel.setText("🎉 Nivel completado");
+                    respuestaField.setDisable(true);
+
+                } else {
+
+                    // 🔥 NUEVA SECUENCIA (SIN TEXTO EXTRA)
+                    String pista = Reglas.obtenerPista(
+                            App.nivelSeleccionado,
+                            valorActual,
+                            reglaActual
+                    );
+
+                  patronLabel.setText("🔄 Nueva regla → " + pista);
+                }
+
+            } else {
+
+                patronLabel.setText("Nivel " + App.nivelSeleccionado +
+                        " → Correcto (" + contadorRegla + "/3)");
+            }
 
         } else {
 
@@ -152,8 +171,8 @@ public class GameController {
                     String.valueOf(respuesta),
                     "Incorrecto"));
 
-            if (intentos == 3) {
-                System.out.println("Perdiste el nivel");
+            if (intentos == 6) {
+                patronLabel.setText("❌ Perdiste el nivel");
             }
         }
 
@@ -164,9 +183,14 @@ public class GameController {
     private void reiniciar() {
 
         intentos = 0;
+        contadorRegla = 0;
+        reglaActual = 1;
+
         lista.clear();
         respuestaField.clear();
         respuestaField.setDisable(false);
+
+        cargarNivel();
     }
 
     @FXML
