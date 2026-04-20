@@ -1,14 +1,19 @@
-package com.patrones.adaptativos.controlador; // 
+package com.patrones.adaptativos.controlador;
 
 import java.io.IOException;
-import com.patrones.adaptativos.vista.App; // 
+
+import com.patrones.adaptativos.vista.App;
+
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 public class PrimaryController {
+    @FXML private TextField nombreField;
 
-    /* Método que te lleva a la pantalla secundaria */
     @FXML
     private void switchToSecondary() throws IOException {
-        App.setRoot("secondary");
+        String nombre = nombreField.getText().trim();
+        App.nombreJugador = (!nombre.isEmpty()) ? nombre : "Invitado";
+        App.setRoot("levels");
     }
 }
