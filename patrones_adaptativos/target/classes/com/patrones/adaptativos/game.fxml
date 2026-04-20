@@ -1,62 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="600" prefWidth="800" style="-fx-background-color:#ADD8E6;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.patrones.adaptativos.GameController">
+<BorderPane prefHeight="600" prefWidth="800" style="-fx-background-color:#ADD8E6;" 
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.patrones.adaptativos.controlador.GameController">
 
-    <!-- Boton Volver -->
-<top>
-    <BorderPane style="-fx-padding:15;">
+    <top>
+        <BorderPane style="-fx-padding:15;">
+            <left>
+                <Button onAction="#volverNiveles" text="← Volver" />
+            </left>
+            <center>
+                <Label style="-fx-font-size:28px; -fx-font-weight:bold;" text="Patrones Adaptativos" />
+            </center>
+        </BorderPane>
+    </top>
 
-        <!-- IZQUIERDA -->
-        <left>
-            <Button onAction="#volverNiveles" style="-fx-font-size:14px;" text="← Volver" />
-        </left>
-
-        <!-- CENTRO (TÍTULO PERFECTO) -->
-        <center>
-            <Label style="-fx-font-size:28px; -fx-font-weight:bold; -fx-text-fill:#0A3D62;" text="Patrones Adaptativos" BorderPane.alignment="CENTER" />
-        </center>
-
-    </BorderPane>
-</top>
     <center>
         <VBox alignment="CENTER" spacing="20">
-
-            <!-- 🔢 PATRÓN MÁS GRANDE -->
-            <Label fx:id="patronLabel" style="-fx-font-size:32px; -fx-font-weight:bold; -fx-text-fill:#1B4F72;" text="Nivel" />
-
-            <!-- ✏️ INPUT MÁS GRANDE -->
-            <TextField fx:id="respuestaField" prefHeight="39.0" prefWidth="663.0" promptText="Ingresa el siguiente número" style="-fx-font-size:18px;" />
-
-            <!-- 🎮 BOTONES MÁS VISIBLES -->
+            <Label fx:id="patronLabel" style="-fx-font-size:32px;" text="Nivel" />
+            
+            <TextField fx:id="respuestaField" maxWidth="300" promptText="Ingresa el número" />
+            
+            <Label fx:id="statusLabel" style="-fx-font-size:18px; -fx-font-weight:bold;" text="" />
+            
             <HBox alignment="CENTER" spacing="15">
-                <Button onAction="#comprobar" style="-fx-font-size:16px; -fx-font-weight:bold;" text="Comprobar" />
-
-                <Button onAction="#reiniciar" style="-fx-font-size:16px; -fx-font-weight:bold;" text="Reiniciar" />
+                <Button onAction="#comprobar" text="Comprobar" />
+                <Button onAction="#reiniciar" text="Reiniciar" />
             </HBox>
-
-            <!-- 📊 TABLA MEJOR CENTRADA Y MÁS PRO -->
-            <TableView fx:id="tablaIntentos" prefHeight="214.0" prefWidth="800.0" style="-fx-font-size:14px;">
-
+            
+            <TableView fx:id="tablaIntentos" prefHeight="200" maxWidth="500">
                 <columns>
-                    <TableColumn fx:id="colIntento" prefWidth="64.0" text="Intento" />
-
-                    <TableColumn fx:id="colRespuesta" prefWidth="216.0" text="Respuesta" />
-
-                    <TableColumn fx:id="colResultado" prefWidth="170" text="Resultado" />
+                    <TableColumn fx:id="colIntento" text="Intento" prefWidth="100" />
+                    <TableColumn fx:id="colRespuesta" text="Respuesta" prefWidth="200" />
+                    <TableColumn fx:id="colResultado" text="Resultado" prefWidth="200" />
                 </columns>
-
             </TableView>
-
         </VBox>
     </center>
-
 </BorderPane>

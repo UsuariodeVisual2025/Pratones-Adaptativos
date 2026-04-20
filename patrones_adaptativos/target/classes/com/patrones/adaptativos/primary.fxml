@@ -8,7 +8,7 @@
 <BorderPane prefHeight="640.0" prefWidth="800.0" 
             xmlns="http://javafx.com/javafx/23.0.1" 
             xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="com.patrones.adaptativos.PrimaryController"
+            fx:controller="com.patrones.adaptativos.controlador.PrimaryController"
             style="-fx-background-color: #ADD8E6;">
    
    <center>
@@ -30,7 +30,8 @@
                     onAction="#switchToSecondary" 
                     prefHeight="42.0" 
                     prefWidth="253.0" 
-                    text="INICIAR JUEGO" />
+                    text="INICIAR JUEGO" 
+                    style="-fx-font-weight: bold; -fx-font-size: 14px;" />
          </center>
       </BorderPane>
    </bottom>

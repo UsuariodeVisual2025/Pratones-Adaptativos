@@ -1,6 +1,7 @@
-package com.patrones.adaptativos;
+package com.patrones.adaptativos.controlador;
 
 import java.io.IOException;
+import com.patrones.adaptativos.vista.App;
 import javafx.fxml.FXML;
 
 public class LevelsController {
@@ -12,29 +13,30 @@ public class LevelsController {
 
     @FXML
     private void nivel1() throws IOException {
-        App.nivelSeleccionado = 1;
-        App.setRoot("game");
+        iniciarNivel(1);
     }
 
     @FXML
     private void nivel2() throws IOException {
-        App.nivelSeleccionado = 2;
-        App.setRoot("game");
+        iniciarNivel(2);
     }
 
     @FXML
     private void nivel3() throws IOException {
-        App.nivelSeleccionado = 3;
-        App.setRoot("game");
+        iniciarNivel(3);
     }
-     // NUEVO NIVEL 4
+
     @FXML
     private void nivel4() throws IOException {
-        App.nivelSeleccionado = 4;
+        iniciarNivel(4);
+    }
+
+    // Método auxiliar para evitar repetir código
+    private void iniciarNivel(int nivel) throws IOException {
+        App.nivelSeleccionado = nivel;
         App.setRoot("game");
     }
 
-    //  ejecuta los niveles y luego muestra los puntajes
     @FXML
     private void verPuntajes() throws IOException {
         App.setRoot("scores");

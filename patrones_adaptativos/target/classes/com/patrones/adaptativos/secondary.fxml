@@ -7,27 +7,30 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="640.0" prefWidth="800.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.patrones.adaptativos.SecondaryController">
+<BorderPane prefHeight="640.0" prefWidth="800.0" style="-fx-background-color: #ADD8E6;" 
+            xmlns="http://javafx.com/javafx/23.0.1" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.patrones.adaptativos.controlador.SecondaryController">
 
    <top>
-      <Button onAction="#switchToPrimary" prefHeight="40" prefWidth="40" text="←" BorderPane.alignment="TOP_RIGHT" />
+      <Button onAction="#switchToPrimary" prefHeight="40" prefWidth="60" text="← Volver" BorderPane.alignment="TOP_LEFT" />
    </top>
 
    <center>
       <VBox alignment="CENTER" spacing="20">
-
          <Label text="Ingresa tu apodo">
             <font>
                <Font name="Arial Black" size="22.0" />
             </font>
          </Label>
 
-         <TextField fx:id="nicknameField" maxWidth="276.0" prefHeight="33.0" prefWidth="276.0" promptText="Máx 10 caracteres (letras y números)" />
+         <TextField fx:id="nicknameField" maxWidth="276.0" prefHeight="33.0" prefWidth="276.0" 
+                    promptText="Máx 10 caracteres (letras y números)" />
 
-         <Label fx:id="errorLabel" textFill="red" />
+         <Label fx:id="errorLabel" textFill="red" style="-fx-font-weight: bold;" />
 
-         <Button onAction="#guardarNickname" prefHeight="40" prefWidth="200" text="Continuar" />
-
+         <Button onAction="#guardarNickname" prefHeight="40" prefWidth="200" text="Continuar" 
+                 style="-fx-font-weight: bold; -fx-background-color: #2C3E50; -fx-text-fill: white;" />
       </VBox>
    </center>
 
