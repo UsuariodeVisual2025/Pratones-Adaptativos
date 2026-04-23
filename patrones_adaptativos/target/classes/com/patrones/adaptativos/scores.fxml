@@ -24,6 +24,7 @@
 
             <TableView fx:id="tablaScores" maxWidth="600" prefHeight="400">
                 <columns>
+                    <TableColumn text="Partida N°" fx:id="colId" prefWidth="75"/>
                     <TableColumn text="Jugador" fx:id="colJugador" prefWidth="150"/>
                     <TableColumn text="Puntaje" fx:id="colPuntaje" prefWidth="100"/>
                     <TableColumn text="Nivel" fx:id="colNivel" prefWidth="100"/>

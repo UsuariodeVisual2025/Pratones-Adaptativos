@@ -3,6 +3,8 @@ package com.patrones.adaptativos.vista;
 import java.io.IOException;
 import java.net.URL;
 
+import com.patrones.adaptativos.modelo.Score; // Importamos tu modelo
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,6 +18,9 @@ public class App extends Application {
     public static int nivelSeleccionado = 1;
     public static String nombreJugador = "Invitado";
     public static int puntajeGlobal = 0;
+    
+    // Variable para tener referencia al score actual de la partida
+    public static Score scoreActual = null; 
 
     @Override
     public void start(Stage stage) throws IOException {

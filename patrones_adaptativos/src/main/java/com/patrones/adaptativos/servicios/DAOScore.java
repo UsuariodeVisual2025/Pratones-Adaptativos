@@ -2,7 +2,10 @@ package com.patrones.adaptativos.servicios;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.patrones.adaptativos.modelo.Score;
@@ -32,6 +35,27 @@ public class DAOScore implements CRUD<Score> {
 
     @Override
     public List<Score> readAll() {
-        return null; // Pendiente de implementar cuando necesites cargar la tabla
+        List<Score> lista = new ArrayList<>();
+        String sql = "SELECT id, jugador, puntaje, nivel, intentos FROM scores";
+        
+        try (Connection con = ConexionBD.getInstancia().getConexion();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
+            while (rs.next()) {
+                Score s = new Score(
+                    rs.getInt("id"),
+                    rs.getString("jugador"),
+                    rs.getInt("puntaje"),
+                    rs.getInt("nivel"),
+                    rs.getInt("intentos")
+                );
+                lista.add(s);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
     }
 }
