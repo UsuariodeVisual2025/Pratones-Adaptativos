@@ -1,17 +1,19 @@
-package com.patrones.adaptativos.modelo; // <-- Asegúrate de mantener este paquete
+package com.patrones.adaptativos.modelo;
 
 public class Score {
-
     private String jugador;
     private int puntaje;
+    private int nivelAlcanzado;
+    private int intentosTotales;
 
-    // Constructor completo
-    public Score(String jugador, int puntaje) {
+    public Score(String jugador, int puntaje, int nivelAlcanzado, int intentosTotales) {
         this.jugador = jugador;
         this.puntaje = puntaje;
+        this.nivelAlcanzado = nivelAlcanzado;
+        this.intentosTotales = intentosTotales;
     }
 
-    // Getters públicos (Obligatorios para la TableView)
+    // Getters
     public String getJugador() {
         return jugador;
     }
@@ -20,7 +22,28 @@ public class Score {
         return puntaje;
     }
 
-    // Opcional: Setters por si quieres modificar un puntaje más adelante
-    public void setJugador(String jugador) { this.jugador = jugador; }
-    public void setPuntaje(int puntaje) { this.puntaje = puntaje; }
+    public int getNivelAlcanzado() {
+        return nivelAlcanzado;
+    }
+
+    public int getIntentosTotales() {
+        return intentosTotales;
+    }
+
+    // Setters (útiles si decides modificar algún objeto Score en el futuro)
+    public void setJugador(String jugador) {
+        this.jugador = jugador;
+    }
+
+    public void setPuntaje(int puntaje) {
+        this.puntaje = puntaje;
+    }
+
+    public void setNivelAlcanzado(int nivelAlcanzado) {
+        this.nivelAlcanzado = nivelAlcanzado;
+    }
+
+    public void setIntentosTotales(int intentosTotales) {
+        this.intentosTotales = intentosTotales;
+    }
 }

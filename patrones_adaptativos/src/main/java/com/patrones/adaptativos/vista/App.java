@@ -1,12 +1,13 @@
 package com.patrones.adaptativos.vista;
 
+import java.io.IOException;
+import java.net.URL;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.io.IOException;
-import java.net.URL;
 
 public class App extends Application {
     private static Scene scene;
@@ -18,7 +19,6 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        // Código limpio, sin etiquetas de parámetros
         scene = new Scene(loadFXML("primary"), 800, 600);
         stage.setTitle("Patrones Adaptativos - Juego de Lógica");
         stage.setScene(scene);
@@ -31,6 +31,9 @@ public class App extends Application {
 
     private static Parent loadFXML(String fxml) throws IOException {
         URL url = App.class.getResource("/com/patrones/adaptativos/" + fxml + ".fxml");
+        if (url == null) {
+            throw new IOException("No se pudo encontrar el archivo FXML: " + fxml);
+        }
         return new FXMLLoader(url).load();
     }
 

@@ -22,10 +22,12 @@
             <Label text="PUNTAJES" 
                    style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#2C3E50;" />
 
-            <TableView fx:id="tablaScores" maxWidth="400" prefHeight="400">
+            <TableView fx:id="tablaScores" maxWidth="600" prefHeight="400">
                 <columns>
-                    <TableColumn text="Jugador" fx:id="colJugador" prefWidth="200"/>
-                    <TableColumn text="Puntaje" fx:id="colPuntaje" prefWidth="198"/>
+                    <TableColumn text="Jugador" fx:id="colJugador" prefWidth="150"/>
+                    <TableColumn text="Puntaje" fx:id="colPuntaje" prefWidth="100"/>
+                    <TableColumn text="Nivel" fx:id="colNivel" prefWidth="100"/>
+                    <TableColumn text="Intentos" fx:id="colIntentos" prefWidth="100"/>
                 </columns>
             </TableView>
 
