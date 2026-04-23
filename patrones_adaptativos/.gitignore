@@ -1,2 +1,7 @@
 "target/" 
 "*.class" 
+"Mysql_workbench/"
+"ORMCarrito/"
+"ORMCliente/"
+"PRUEBAORM/"
+"PRUEBAORM2/"
