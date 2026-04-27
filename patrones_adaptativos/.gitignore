@@ -1,7 +1,13 @@
-"target/" 
-"*.class" 
-"Mysql_workbench/"
-"ORMCarrito/"
-"ORMCliente/"
-"PRUEBAORM/"
-"PRUEBAORM2/"
+# Archivos de compilación de Java
+*.class
+target/
+
+# Carpetas de otros proyectos o temporales
+Mysql_workbench/
+ORMCarrito/
+ORMCliente/
+PRUEBAORM/
+PRUEBAORM2/
+
+# Archivos de logs de error
+*.log
