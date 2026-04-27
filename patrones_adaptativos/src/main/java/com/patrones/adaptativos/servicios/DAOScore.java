@@ -25,11 +25,11 @@ public class DAOScore implements CRUD<Score> {
             ps.setInt(4, score.getIntentosTotales());
             
             ps.executeUpdate();
-            return "Puntaje guardado exitosamente en MySQL";
+            return "SUCCESS"; // Señal clara para el controlador
             
         } catch (SQLException e) {
             e.printStackTrace();
-            return "Error al guardar: " + e.getMessage();
+            return "ERROR";   // Señal clara para que el controlador dispare la alerta
         }
     }
 
@@ -55,6 +55,8 @@ public class DAOScore implements CRUD<Score> {
             
         } catch (SQLException e) {
             e.printStackTrace();
+            // Para la lectura, retornamos la lista vacía si hay error 
+            // para evitar que la app se detenga por completo.
         }
         return lista;
     }
