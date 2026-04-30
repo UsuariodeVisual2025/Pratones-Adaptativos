@@ -30,12 +30,19 @@ public class GameController {
 
     private ObservableList<Intento> lista = FXCollections.observableArrayList();
     private PerfilJugador perfil = new PerfilJugador();
+    
+    // 1. Declaración de la variable de instancia (Modelo)
+    private Reglas reglas; 
+
     private int intentos = 0, valorActual, reglaActual, contadorRegla;
     private int puntaje;
 
     @FXML
     public void initialize() {
         this.puntaje = App.puntajeGlobal; 
+        
+        // 2. Instanciación de Reglas (Lo que el profesor solicitó)
+        this.reglas = new Reglas(); 
         
         colIntento.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getIntento()).asObject());
         colRespuesta.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRespuesta()));
@@ -61,11 +68,13 @@ public class GameController {
 
     private void cargarNivel() {
         int nivel = App.nivelSeleccionado;
-        valorActual = Reglas.obtenerUltimoNumero(nivel);
+        
+        // 3. Uso del objeto instanciado 'reglas' en lugar de la clase estática
+        valorActual = reglas.obtenerUltimoNumero(nivel);
         reglaActual = 1;
         contadorRegla = 0;
         intentos = 0;
-        patronLabel.setText("Adivina el patrón: " + Reglas.obtenerPatron(nivel));
+        patronLabel.setText("Adivina el patrón: " + reglas.obtenerPatron(nivel));
         statusLabel.setText("Nivel " + nivel + " activo.");
     }
 
@@ -80,7 +89,9 @@ public class GameController {
         }
 
         intentos++;
-        int esperado = Reglas.aplicarRegla(App.nivelSeleccionado, valorActual, reglaActual, perfil.getTasaExito());
+        
+        // Uso del objeto instanciado para aplicar la lógica del juego
+        int esperado = reglas.aplicarRegla(App.nivelSeleccionado, valorActual, reglaActual, perfil.getTasaExito());
 
         if (respuesta == esperado) {
             puntaje += 10;
@@ -97,7 +108,7 @@ public class GameController {
                     cargarNivel();
                 } else {
                     patronLabel.setText("🎉 ¡Juego Completado!");
-                    ScoresController.registrarPuntajeFinal(); // Registro automático al ganar
+                    ScoresController.registrarPuntajeFinal();
                 }
             }
         } else {
@@ -118,7 +129,6 @@ public class GameController {
 
     @FXML
     private void volverNiveles() throws IOException { 
-        // AL VOLVER, REGISTRAMOS POR SI EL USUARIO QUIERE SALIR Y GUARDAR
         ScoresController.registrarPuntajeFinal();
         App.setRoot("levels"); 
     }

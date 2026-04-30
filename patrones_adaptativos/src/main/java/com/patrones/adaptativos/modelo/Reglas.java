@@ -2,7 +2,12 @@ package com.patrones.adaptativos.modelo;
 
 public class Reglas {
 
-    public static String obtenerPatron(int nivel) {
+    // Constructor vacío (opcional, pero buena práctica para instanciar)
+    public Reglas() {
+    }
+
+    // Se eliminó 'static' para que el método pertenezca a la instancia
+    public String obtenerPatron(int nivel) {
         return switch (nivel) {
             case 1 -> "2, 4, 6 ...";
             case 2 -> "3, 6, 12 ...";
@@ -12,13 +17,19 @@ public class Reglas {
         };
     }
 
-    public static int obtenerUltimoNumero(int nivel) {
+    // Se eliminó 'static'
+    public int obtenerUltimoNumero(int nivel) {
         return switch (nivel) {
-            case 1 -> 6; case 2 -> 12; case 3 -> 9; case 4 -> 20; default -> 0;
+            case 1 -> 6; 
+            case 2 -> 12; 
+            case 3 -> 9; 
+            case 4 -> 20; 
+            default -> 0;
         };
     }
 
-    public static int aplicarRegla(int nivel, int actual, int regla, double tasaExito) {
+    // Se eliminó 'static'
+    public int aplicarRegla(int nivel, int actual, int regla, double tasaExito) {
         // En nivel 1, lógica fija para evitar confusión
         if (nivel == 1) return actual + 2;
         
