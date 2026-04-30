@@ -1,36 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="640.0" prefWidth="800.0" style="-fx-background-color: #ADD8E6;" 
-            xmlns="http://javafx.com/javafx/23.0.1" 
-            xmlns:fx="http://javafx.com/fxml/1" 
+<BorderPane prefHeight="640.0" prefWidth="800.0" 
+            style="-fx-background-color: linear-gradient(to bottom right, #4facfe 0%, #00f2fe 100%);" 
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" 
             fx:controller="com.patrones.adaptativos.controlador.SecondaryController">
 
+   <!-- Botón Volver estilizado como en el Primary -->
    <top>
-      <Button onAction="#switchToPrimary" prefHeight="40" prefWidth="60" text="← Volver" BorderPane.alignment="TOP_LEFT" />
+      <StackPane alignment="TOP_LEFT" style="-fx-padding: 20 0 0 20;">
+         <Button onAction="#switchToPrimary" text="← VOLVER" 
+                 style="-fx-background-color: rgba(255,255,255,0.3); 
+                        -fx-text-fill: #2C3E50; 
+                        -fx-font-weight: bold; 
+                        -fx-background-radius: 20; 
+                        -fx-padding: 10 20; 
+                        -fx-cursor: hand;
+                        -fx-border-color: rgba(255,255,255,0.5);
+                        -fx-border-radius: 20;" />
+      </StackPane>
    </top>
 
    <center>
-      <VBox alignment="CENTER" spacing="20">
-         <Label text="Ingresa tu apodo">
-            <font>
-               <Font name="Arial Black" size="22.0" />
-            </font>
-         </Label>
+      <VBox alignment="CENTER" spacing="0">
+         <padding>
+            <Insets bottom="50" left="20" right="20" top="20" />
+         </padding>
+         
+         <!-- Cuadro de cristal (Mismo estilo que el contenedor del Primary) -->
+         <VBox alignment="CENTER" maxWidth="450" spacing="25" 
+               style="-fx-background-color: rgba(255, 255, 255, 0.25); 
+                      -fx-background-radius: 30; 
+                      -fx-border-color: rgba(255, 255, 255, 0.5); 
+                      -fx-border-radius: 30; 
+                      -fx-padding: 40;
+                      -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 10);">
+            
+            <Label text="¡BIENVENIDO!" style="-fx-text-fill: #2C3E50; -fx-font-weight: bold;">
+               <font>
+                  <Font name="Arial Black" size="32.0" />
+               </font>
+            </Label>
 
-         <TextField fx:id="nicknameField" maxWidth="276.0" prefHeight="33.0" prefWidth="276.0" 
-                    promptText="Máx 10 caracteres (letras y números)" />
+            <Label text="Escribe tu apodo para registrar tus puntos" 
+                   style="-fx-text-fill: #34495e; -fx-font-size: 16px; -fx-font-weight: bold;" />
 
-         <Label fx:id="errorLabel" textFill="red" style="-fx-font-weight: bold;" />
+            <!-- Campo de texto moderno -->
+            <TextField fx:id="nicknameField" maxWidth="320" prefHeight="45.0" 
+                       promptText="Nickname (Máx 10)" 
+                       style="-fx-background-radius: 25; 
+                              -fx-alignment: center; 
+                              -fx-font-size: 16px; 
+                              -fx-border-color: #2C3E50; 
+                              -fx-border-radius: 25; 
+                              -fx-background-color: white;
+                              -fx-padding: 0 15 0 15;" />
 
-         <Button onAction="#guardarNickname" prefHeight="40" prefWidth="200" text="Continuar" 
-                 style="-fx-font-weight: bold; -fx-background-color: #2C3E50; -fx-text-fill: white;" />
+            <Label fx:id="errorLabel" textFill="#e74c3c" 
+                   style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+
+            <!-- Botón de acción principal -->
+            <Button onAction="#guardarNickname" prefHeight="50" prefWidth="280" text="CONTINUAR" 
+                    style="-fx-background-color: #2ecc71; 
+                           -fx-text-fill: white; 
+                           -fx-font-weight: bold; 
+                           -fx-font-size: 18px; 
+                           -fx-background-radius: 30; 
+                           -fx-cursor: hand; 
+                           -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);" />
+         </VBox>
       </VBox>
    </center>
 
