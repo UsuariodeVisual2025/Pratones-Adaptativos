@@ -6,37 +6,42 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.effect.DropShadow?>
 
 <BorderPane prefHeight="640.0" prefWidth="800.0" 
             xmlns="http://javafx.com/javafx/23.0.1" 
             xmlns:fx="http://javafx.com/fxml/1" 
             fx:controller="com.patrones.adaptativos.controlador.PrimaryController"
-            style="-fx-background-color: #ADD8E6;">
+            style="-fx-background-color: linear-gradient(to bottom right, #4facfe 0%, #00f2fe 100%);">
    
    <center>
-      <VBox alignment="CENTER" spacing="20">
-          <Label text="Bienvenido Jugador" textFill="#2C3E50">
+      <VBox alignment="CENTER" spacing="30">
+          <!-- Título con sombra y fuente más grande -->
+          <Label text="Bienvenido Jugador" textFill="#FFFFFF" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);">
              <font>
-                <Font name="Arial Black" size="28.0" />
+                <Font name="Arial Rounded MT Bold" size="48.0" />
              </font>
           </Label>
           
-          <Label text="Ingresa tu apodo:" />
-          <TextField fx:id="nombreField" maxWidth="250.0" promptText="Ej: Jugador1" />
+          <VBox alignment="CENTER" spacing="10">
+              <Label text="Ingresa tu apodo para comenzar:" textFill="WHITE" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+              <!-- TextField estilizado -->
+              <TextField fx:id="nombreField" maxWidth="300.0" prefHeight="45.0" promptText="Ej: MasterLogica" 
+                         style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #FFFFFF; -fx-border-width: 2; -fx-background-color: rgba(255,255,255,0.9); -fx-alignment: center; -fx-font-size: 16px;" />
+          </VBox>
       </VBox>
    </center>
    
    <bottom>
-      <BorderPane style="-fx-padding: 0 0 100 0;">
-         <center>
+      <VBox alignment="CENTER" style="-fx-padding: 0 0 100 0;">
+            <!-- Botón tipo Arcade -->
             <Button alignment="CENTER" 
                     mnemonicParsing="false" 
                     onAction="#switchToSecondary" 
-                    prefHeight="42.0" 
-                    prefWidth="253.0" 
+                    prefHeight="60.0" 
+                    prefWidth="280.0" 
                     text="INICIAR JUEGO" 
-                    style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-background-color: #FFFFFF;" />
-         </center>
-      </BorderPane>
+                    style="-fx-background-color: #ff9f43; -fx-background-radius: 50; -fx-text-fill: white; -fx-font-family: 'Segoe UI Black'; -fx-font-size: 20px; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 5);" />
+      </VBox>
    </bottom>
 </BorderPane>
