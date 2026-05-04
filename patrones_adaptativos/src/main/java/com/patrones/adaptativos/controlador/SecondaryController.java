@@ -1,21 +1,31 @@
-package com.patrones.adaptativos.controlador; // <-- Paquete correcto
+package com.patrones.adaptativos.controlador;
 
 import java.io.IOException;
-import com.patrones.adaptativos.vista.App; // <-- Importación correcta desde vista
+
+import com.patrones.adaptativos.vista.App;
+
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+/**
+ * SecondaryController: Se encarga de la gestión y validación del apodo del jugador.
+ * Sirve para asegurar que el nombre de usuario cumpla con el formato correcto.
+ */
 public class SecondaryController {
 
-    @FXML
-    private TextField nicknameField;
+    // Conexión con el cuadro de texto del FXML para el apodo
+    @FXML private TextField nicknameField;
 
-    @FXML
-    private Label errorLabel;
+    // Conexión con la etiqueta de texto para mostrar mensajes de error al usuario
+    @FXML private Label errorLabel;
 
     /**
-     * Regresa a la pantalla de bienvenida.
+     * Método para el botón "Volver".
+     * Regresa al usuario a la pantalla de bienvenida inicial.
      */
     @FXML
     private void switchToPrimary() throws IOException {
@@ -23,29 +33,45 @@ public class SecondaryController {
     }
 
     /**
-     * Valida el nickname y lo guarda en la clase global App antes de cambiar de pantalla.
+     * Método principal: Valida el nickname y lo pasa de forma segura al siguiente controlador.
+     * Solo permite avanzar si el nombre cumple con las reglas establecidas.
      */
     @FXML
     private void guardarNickname() throws IOException {
-        String nickname = nicknameField.getText().trim(); // .trim() para evitar espacios en blanco
+        // Obtenemos el texto y usamos .trim() para eliminar espacios accidentales
+        String nickname = nicknameField.getText().trim();
 
-        // Validación de vacío
+        // --- VALIDACIÓN 1: ¿Está vacío? ---
         if (nickname.isEmpty()) {
-            errorLabel.setText("El apodo no puede estar vacío");
+            if (errorLabel != null) {
+                errorLabel.setText("El apodo no puede estar vacío");
+            }
             return;
         }
 
-        // Validación de formato: solo alfanuméricos y máximo 10 caracteres
-        if (!nickname.matches("[a-zA-Z0-9]{1,10}")) {
-            errorLabel.setText("Máx 10 caracteres (letras y números)");
+        // --- VALIDACIÓN 2: Formato y Largo ---
+        if (!nickname.matches("^[a-zA-Z]{1,10}$")) {
+            if (errorLabel != null) {
+                errorLabel.setText("Máx 10 caracteres (solo letras)");
+            }
             return;
         }
 
-        // Si es válido, guardamos y navegamos
-        errorLabel.setText("");
-        App.nombreJugador = nickname; 
-        
-        System.out.println("Apodo guardado: " + nickname);
-        App.setRoot("levels");
+        // --- ÉXITO ---
+        if (errorLabel != null) {
+            errorLabel.setText(""); // Limpiamos cualquier mensaje de error previo
+        }
+       
+        System.out.println("Apodo validado: " + nickname);
+       
+        // Carga la siguiente vista (LevelsController) y le pasa el nombre
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/patrones/adaptativos/levels.fxml"));
+        Parent root = loader.load();
+
+        LevelsController controller = loader.getController();
+        controller.recibirNombreJugador(nickname);
+
+        // Cambiamos la escena en la ventana principal
+        App.getPrimaryStage().setScene(new Scene(root, 800, 600));
     }
 }

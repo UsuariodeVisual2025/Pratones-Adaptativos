@@ -8,14 +8,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.effect.DropShadow?>
 
-<BorderPane prefHeight="640.0" prefWidth="800.0" 
-            style="-fx-background-color: linear-gradient(to bottom right, #4facfe 0%, #00f2fe 100%);" 
-            xmlns="http://javafx.com/javafx/23.0.1" 
-            xmlns:fx="http://javafx.com/fxml/1" 
+<BorderPane prefHeight="640.0" prefWidth="800.0"
+            style="-fx-background-color: linear-gradient(to bottom right, #4facfe 0%, #00f2fe 100%);"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.patrones.adaptativos.controlador.LevelsController">
-
     <top>
-        <Button onAction="#volver" prefHeight="45" prefWidth="90" text="← VOLVER" 
+        <!-- Línea actualizada para regresar a la pantalla de apodo/registro -->
+        <Button onAction="#volver" prefHeight="45" prefWidth="90" text="← VOLVER"
                 style="-fx-background-color: rgba(255,255,255,0.3); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;">
             <BorderPane.margin>
                 <Insets top="20.0" left="20.0" />
@@ -35,25 +35,25 @@
             </Label>
 
             <!-- Nivel 1 - Verde (Fácil) -->
-            <Button onAction="#nivel1" prefHeight="55.0" prefWidth="250.0" text="Nivel 1 - Principiante" 
+            <Button onAction="#nivel1" prefHeight="55.0" prefWidth="250.0" text="Nivel 1 - Principiante"
                     style="-fx-background-color: #2ecc71; -fx-background-radius: 25; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);" />
             
             <!-- Nivel 2 - Amarillo (Medio) -->
-            <Button onAction="#nivel2" prefHeight="55.0" prefWidth="250.0" text="Nivel 2 - Intermedio" 
+            <Button onAction="#nivel2" prefHeight="55.0" prefWidth="250.0" text="Nivel 2 - Intermedio"
                     style="-fx-background-color: #f1c40f; -fx-background-radius: 25; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);" />
             
             <!-- Nivel 3 - Naranja (Difícil) -->
-            <Button onAction="#nivel3" prefHeight="55.0" prefWidth="250.0" text="Nivel 3 - Difícil" 
+            <Button onAction="#nivel3" prefHeight="55.0" prefWidth="250.0" text="Nivel 3 - Difícil"
                     style="-fx-background-color: #e67e22; -fx-background-radius: 25; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);" />
             
             <!-- Nivel 4 - Rojo (Experto) -->
-            <Button onAction="#nivel4" prefHeight="55.0" prefWidth="250.0" text="Nivel 4 - Experto" 
+            <Button onAction="#nivel4" prefHeight="55.0" prefWidth="250.0" text="Nivel 4 - Experto"
                     style="-fx-background-color: #e74c3c; -fx-background-radius: 25; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);" />
             
             <Label text="__________________________" textFill="WHITE" opacity="0.5" />
 
             <!-- Ver Puntajes - Azul Oscuro -->
-            <Button onAction="#verPuntajes" prefHeight="55.0" prefWidth="250.0" text="VER PUNTAJES" 
+            <Button onAction="#verPuntajes" prefHeight="55.0" prefWidth="250.0" text="VER PUNTAJES"
                     style="-fx-background-color: #34495e; -fx-background-radius: 25; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);" />
         </VBox>
     </center>

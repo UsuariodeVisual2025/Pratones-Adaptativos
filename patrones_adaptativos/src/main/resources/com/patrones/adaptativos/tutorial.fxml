@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="640.0" prefWidth="800.0" 
+            style="-fx-background-color: linear-gradient(to bottom right, #2c3e50 0%, #000000 100%);" 
+            xmlns="http://javafx.com/javafx/17" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.patrones.adaptativos.controlador.LevelsController">
+
+    <center>
+        <VBox alignment="CENTER" spacing="25.0" style="-fx-padding: 40;">
+            
+            <Label text="¿CÓMO JUGAR?" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="48.0" />
+                </font>
+            </Label>
+
+            <VBox alignment="TOP_LEFT" spacing="15.0" maxWidth="600.0" 
+                  style="-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 20; -fx-padding: 30;">
+                
+                <Label text="1. Se te presentará una secuencia numérica lógica." textFill="WHITE" wrapText="true">
+                    <font><Font size="18.0" /></font>
+                </Label>
+                
+                <Label text="2. Deberás adivinar cuál es el siguiente número del patrón." textFill="WHITE" wrapText="true">
+                    <font><Font size="18.0" /></font>
+                </Label>
+                
+                <Label text="3. Cada acierto suma 10 puntos, cada error resta 5." textFill="WHITE" wrapText="true">
+                    <font><Font size="18.0" /></font>
+                </Label>
+                
+                <Label text="4. Si logras 3 aciertos seguidos, ¡subes de nivel!" textFill="WHITE" wrapText="true">
+                    <font><Font size="18.0" /></font>
+                </Label>
+            </VBox>
+
+            <!-- Este botón ahora llama correctamente al método en LevelsController -->
+            <Button onAction="#switchToLevels" prefHeight="60.0" prefWidth="280.0" text="¡ENTENDIDO!" 
+                    style="-fx-background-color: #3498db; -fx-background-radius: 30; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20px; -fx-cursor: hand;" />
+        
+        </VBox>
+    </center>
+
+</BorderPane>

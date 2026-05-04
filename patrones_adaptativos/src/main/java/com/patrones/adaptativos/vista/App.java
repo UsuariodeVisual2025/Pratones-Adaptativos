@@ -3,8 +3,6 @@ package com.patrones.adaptativos.vista;
 import java.io.IOException;
 import java.net.URL;
 
-import com.patrones.adaptativos.modelo.Score; // Importamos tu modelo
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,18 +10,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class App extends Application {
+   
     private static Scene scene;
-
-    // --- ESTADO GLOBAL ---
-    public static int nivelSeleccionado = 1;
-    public static String nombreJugador = "Invitado";
-    public static int puntajeGlobal = 0;
-    
-    // Variable para tener referencia al score actual de la partida
-    public static Score scoreActual = null; 
+    private static Stage primaryStage;
 
     @Override
     public void start(Stage stage) throws IOException {
+        primaryStage = stage;
         scene = new Scene(loadFXML("primary"), 800, 600);
         stage.setTitle("Patrones Adaptativos - Juego de Lógica");
         stage.setScene(scene);
@@ -34,7 +27,7 @@ public class App extends Application {
         scene.setRoot(loadFXML(fxml));
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
+    public static Parent loadFXML(String fxml) throws IOException {
         URL url = App.class.getResource("/com/patrones/adaptativos/" + fxml + ".fxml");
         if (url == null) {
             throw new IOException("No se pudo encontrar el archivo FXML: " + fxml);
@@ -42,7 +35,11 @@ public class App extends Application {
         return new FXMLLoader(url).load();
     }
 
-    public static void main(String[] args) { 
-        launch(); 
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    public static void main(String[] args) {
+        launch();
     }
 }
