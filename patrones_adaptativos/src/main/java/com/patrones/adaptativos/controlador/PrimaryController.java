@@ -17,10 +17,6 @@ import javafx.scene.control.TextField;
  */
 public class PrimaryController {
 
-    /**
-     * Este método se activa cuando el usuario hace clic en el botón para iniciar 
-     * o entrar al juego (usualmente un botón llamado "Jugar" o "Siguiente").
-     */
     @FXML
     private TextField nombreField;
 

@@ -18,13 +18,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-/**
- * ScoresController: Gestiona la visualización y el registro de los puntajes.
- * Conecta la interfaz de usuario con la base de datos (a través del DAO).
- */
 public class ScoresController {
 
-    // --- CONEXIONES CON LA TABLA VISUAL (FXML) ---
     @FXML private TableView<Score> tablaScores;
     @FXML private TableColumn<Score, Integer> colId;
     @FXML private TableColumn<Score, String> colJugador;
@@ -36,10 +31,6 @@ public class ScoresController {
     private final ObservableList<Score> lista = FXCollections.observableArrayList();
     private final DAOScore dao = new DAOScore();
 
-    /**
-     * initialize(): Se ejecuta al abrir la pantalla de puntajes.
-     * Carga los datos de la base de datos y los pone en la tabla.
-     */
     @FXML
     public void initialize() {
         configurarColumnas();
@@ -50,7 +41,6 @@ public class ScoresController {
     private void configurarColumnas() {
         colId.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getId()).asObject());
         
-        // Columna Jugador: Incluye una lógica para "limpiar" el nombre si tiene paréntesis
         colJugador.setCellValueFactory(data -> {
             String nombre = data.getValue().getJugador();
             // Limpieza de nombre: quitamos metadatos adicionales si existen

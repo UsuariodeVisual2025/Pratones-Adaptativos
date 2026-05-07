@@ -1,21 +1,13 @@
 package com.patrones.adaptativos.modelo;
 
-/**
- * Clase Score: Representa el resultado final de una partida.
- * Se utiliza tanto para mostrar datos en la tabla como para enviarlos a la base de datos.
- */
 public class Score {
-    // Atributos que coinciden con las columnas de tu tabla en la base de datos
-    private int id;              // Identificador único (llave primaria)
-    private String jugador;      // El apodo del usuario
-    private int puntaje;         // Puntos acumulados en la sesión
-    private int nivelAlcanzado;  // El nivel máximo en el que estuvo el jugador
-    private int intentosTotales; // Cantidad de veces que interactuó con el sistema
+    private int id;
+    private String jugador;
+    private int puntaje;
+    private int nivelAlcanzado;
+    private int intentosTotales;
 
-    /**
-     * Constructor 1: Se usa para LEER datos.
-     * Cuando traemos información de la base de datos, ya conocemos el ID asignado.
-     */
+    // Constructor para cuando ya tienes el ID (ej: al hacer un SELECT de la BD)
     public Score(int id, String jugador, int puntaje, int nivelAlcanzado, int intentosTotales) {
         this.id = id;
         this.jugador = jugador;
@@ -24,10 +16,7 @@ public class Score {
         this.intentosTotales = intentosTotales;
     }
 
-    /**
-     * Constructor 2: Se usa para GUARDAR datos nuevos.
-     * No incluimos el ID porque la base de datos lo genera automáticamente (Auto-incremental).
-     */
+    // Constructor para cuando vas a crear un nuevo registro (sin ID, porque es auto-incremental)
     public Score(String jugador, int puntaje, int nivelAlcanzado, int intentosTotales) {
         this.jugador = jugador;
         this.puntaje = puntaje;
@@ -35,9 +24,7 @@ public class Score {
         this.intentosTotales = intentosTotales;
     }
 
-    // --- GETTERS Y SETTERS ---
-    // Permiten que JavaFX y el DAO accedan a la información privada de forma segura.
-
+    // Getters y Setters
     public int getId() {
         return id;
     }
