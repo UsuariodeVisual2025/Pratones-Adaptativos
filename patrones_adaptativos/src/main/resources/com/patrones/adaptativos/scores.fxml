@@ -4,6 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
+<!-- El fx:controller debe coincidir exactamente con la ubicación de tu clase ScoresController -->
 <BorderPane prefHeight="600" prefWidth="800" 
             style="-fx-background-color: linear-gradient(to bottom right, #4facfe 0%, #00f2fe 100%);" 
             xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" 
@@ -12,6 +13,7 @@
     <top>
         <BorderPane style="-fx-padding: 15;">
             <left>
+                <!-- El onAction="#volver" llama al método public void volver() en tu controlador -->
                 <Button onAction="#volver" text="← VOLVER" 
                         style="-fx-background-color: rgba(255,255,255,0.4); -fx-text-fill: black; -fx-font-weight: bold; -fx-background-radius: 15; -fx-cursor: hand;" />
             </left>
@@ -19,7 +21,7 @@
     </top>
 
     <center>
-        <VBox alignment="CENTER" spacing="0"> <!-- Spacing 0 para que la cabecera y la tabla se peguen -->
+        <VBox alignment="CENTER" spacing="0"> 
             <padding>
                 <Insets top="10" right="30" bottom="40" left="30" />
             </padding>
@@ -27,7 +29,7 @@
             <Label text="TABLA DE PUNTAJES" 
                    style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #000000; -fx-padding: 0 0 20 0;" />
 
-            <!-- ESTA ES TU NUEVA CABECERA PERSONALIZADA -->
+            <!-- Cabecera personalizada para la tabla -->
             <HBox maxWidth="750" prefHeight="40" alignment="CENTER_LEFT"
                   style="-fx-background-color: rgba(0, 0, 0, 0.6); -fx-background-radius: 20 20 0 0; -fx-padding: 0 10 0 10;">
                 <Label text="Partida N°" prefWidth="100" textFill="WHITE" style="-fx-font-weight: bold; -fx-alignment: CENTER;" />
@@ -37,7 +39,7 @@
                 <Label text="Intentos" prefWidth="120" textFill="WHITE" style="-fx-font-weight: bold; -fx-alignment: CENTER;" />
             </HBox>
 
-            <!-- LA TABLA SIN CABECERA GRIS -->
+            <!-- Tabla de datos -->
             <TableView fx:id="tablaScores" maxWidth="750" prefHeight="400" 
                        style="-fx-background-color: rgba(255, 255, 255, 0.25); 
                               -fx-background-radius: 0 0 20 20; 
@@ -46,12 +48,11 @@
                               -fx-column-header-background: transparent; 
                               -fx-padding: 5;">
                 <columns>
-                    <!-- Las columnas se mantienen pero les quitamos el texto para que no se duplique -->
-                    <TableColumn fx:id="colId" text="" prefWidth="100" style="-fx-alignment: CENTER; -fx-background-color: transparent;" />
-                    <TableColumn fx:id="colJugador" text="" prefWidth="200" style="-fx-alignment: CENTER-LEFT; -fx-background-color: transparent; -fx-padding: 0 0 0 15;" />
-                    <TableColumn fx:id="colPuntaje" text="" prefWidth="120" style="-fx-alignment: CENTER; -fx-background-color: transparent; -fx-font-weight: bold;" />
-                    <TableColumn fx:id="colNivel" text="" prefWidth="120" style="-fx-alignment: CENTER; -fx-background-color: transparent;" />
-                    <TableColumn fx:id="colIntentos" text="" prefWidth="120" style="-fx-alignment: CENTER; -fx-background-color: transparent;" />
+                    <TableColumn fx:id="colId" prefWidth="100" style="-fx-alignment: CENTER; -fx-background-color: transparent;" />
+                    <TableColumn fx:id="colJugador" prefWidth="200" style="-fx-alignment: CENTER-LEFT; -fx-background-color: transparent; -fx-padding: 0 0 0 15;" />
+                    <TableColumn fx:id="colPuntaje" prefWidth="120" style="-fx-alignment: CENTER; -fx-background-color: transparent; -fx-font-weight: bold;" />
+                    <TableColumn fx:id="colNivel" prefWidth="120" style="-fx-alignment: CENTER; -fx-background-color: transparent;" />
+                    <TableColumn fx:id="colIntentos" prefWidth="120" style="-fx-alignment: CENTER; -fx-background-color: transparent;" />
                 </columns>
                 <columnResizePolicy>
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

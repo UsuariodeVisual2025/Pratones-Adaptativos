@@ -12,6 +12,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -24,15 +26,15 @@ public class ScoresController {
 
     // --- CONEXIONES CON LA TABLA VISUAL (FXML) ---
     @FXML private TableView<Score> tablaScores;
-    @FXML private TableColumn<Score, Integer> colId; 
+    @FXML private TableColumn<Score, Integer> colId;
     @FXML private TableColumn<Score, String> colJugador;
     @FXML private TableColumn<Score, Integer> colPuntaje;
     @FXML private TableColumn<Score, Integer> colNivel;
     @FXML private TableColumn<Score, Integer> colIntentos;
 
-    // Lista que contiene los puntajes y el objeto DAO para comunicarse con la base de datos
-    private static ObservableList<Score> lista = FXCollections.observableArrayList();
-    private static DAOScore dao = new DAOScore();
+    // Instancias de dominio (Viven y mueren con el controlador)
+    private final ObservableList<Score> lista = FXCollections.observableArrayList();
+    private final DAOScore dao = new DAOScore();
 
     /**
      * initialize(): Se ejecuta al abrir la pantalla de puntajes.
@@ -40,78 +42,83 @@ public class ScoresController {
      */
     @FXML
     public void initialize() {
-        // Pedimos al DAO que lea todos los registros guardados y los ponga en la lista
-        lista.setAll(dao.readAll());
-        
-        // Configuramos cada columna para que sepa qué dato mostrar del objeto 'Score'
+        configurarColumnas();
+        cargarDatosDesdeDB();
+        tablaScores.setItems(lista);
+    }
+
+    private void configurarColumnas() {
         colId.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getId()).asObject());
         
         // Columna Jugador: Incluye una lógica para "limpiar" el nombre si tiene paréntesis
         colJugador.setCellValueFactory(data -> {
-            String nombreOriginal = data.getValue().getJugador();
-            if (nombreOriginal != null && nombreOriginal.contains(" (")) {
-                String nombreLimpio = nombreOriginal.split(" \\(")[0];
-                return new SimpleStringProperty(nombreLimpio);
-            }
-            return new SimpleStringProperty(nombreOriginal);
+            String nombre = data.getValue().getJugador();
+            // Limpieza de nombre: quitamos metadatos adicionales si existen
+            String nombreLimpio = (nombre != null && nombre.contains(" (")) ? 
+                                 nombre.split(" \\(")[0] : nombre;
+            return new SimpleStringProperty(nombreLimpio);
         });
 
         colPuntaje.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getPuntaje()).asObject());
         colNivel.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getNivelAlcanzado()).asObject());
         colIntentos.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getIntentosTotales()).asObject());
-        
-        // Asignamos la lista de datos a la tabla visual
-        tablaScores.setItems(lista);
     }
 
-    /**
-     * registrarPuntajeFinal(): Este método es especial porque es 'static'.
-     * Se puede llamar desde cualquier otra pantalla para guardar el progreso actual.
-     */
-    public static void registrarPuntajeFinal() {
-        System.out.println("Entrando a registrarPuntajeFinal...");
-
-        // Si el puntaje es 0 o negativo, no guardamos nada para no llenar la base de datos de basura
-        if (App.puntajeGlobal <= 0 && !lista.isEmpty()) {
-            System.out.println("No se guarda: puntaje <= 0");
-            return;
-        }
-
-        // Calculamos cuántos intentos lleva este jugador específico
-        int totalIntentos = (int) lista.stream()
-                .filter(s -> s.getJugador().contains(App.nombreJugador))
-                .count() + 1;
-
-        // Creamos un nuevo objeto 'Score' con los datos actuales de la sesión
-        String registro = App.nombreJugador;
-        Score nuevoScore = new Score(registro, App.puntajeGlobal, App.nivelSeleccionado, totalIntentos);
-
-        // --- GESTIÓN DE ENVÍO A BASE DE DATOS ---
-        // Le pedimos al DAO que cree (inserte) este nuevo puntaje
-        String resultado = dao.create(nuevoScore);
-        
-        // Si hay un error en la conexión, mostramos una alerta visual al usuario
-        if ("ERROR".equals(resultado)) {
-            // Platform.runLater asegura que la alerta se muestre correctamente en la interfaz
-            Platform.runLater(() -> {
-                Alert alerta = new Alert(Alert.AlertType.ERROR);
-                alerta.setTitle("Error de Sistema");
-                alerta.setHeaderText("No se pudo guardar el progreso");
-                alerta.setContentText("Ocurrió un problema al conectar con la base de datos. Inténtalo de nuevo.");
-                alerta.showAndWait();
-            });
-        } else {
-            // Si se guardó bien, refrescamos la lista para que aparezca el nuevo puntaje
-            System.out.println("Guardado exitoso: " + resultado);
+    private void cargarDatosDesdeDB() {
+        // Ejecutamos la carga en un hilo aparte si la base de datos es lenta
+        try {
             lista.setAll(dao.readAll());
+        } catch (Exception e) {
+            System.err.println("Error crítico al leer la DB: " + e.getMessage());
         }
     }
 
     /**
-     * Método para el botón "Volver"
+     * Registro de puntaje. Mantenemos el acceso estático para facilitar la llamada
+     * desde el GameController, pero delegamos el trabajo a una instancia nueva del DAO.
      */
+    public static void registrarPuntajeFinal(String nombreJugador, int puntajeFinal, int nivelJugador) {
+        if (puntajeFinal <= 0) return;
+
+        // Instancia de servicio temporal para la transacción
+        DAOScore service = new DAOScore();
+        
+        try {
+            // Cálculo dinámico de intentos
+            int totalIntentos = (int) service.readAll().stream()
+                    .filter(s -> s.getJugador().contains(nombreJugador))
+                    .count() + 1;
+
+            Score nuevoScore = new Score(nombreJugador, puntajeFinal, nivelJugador, totalIntentos);
+            String resultado = service.create(nuevoScore);
+            
+            if ("ERROR".equals(resultado)) {
+                Platform.runLater(() -> lanzarAlertaError());
+            }
+        } catch (Exception e) {
+            System.err.println("Fallo en el registro de score: " + e.getMessage());
+        }
+    }
+
+    private static void lanzarAlertaError() {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle("Error de Persistencia");
+        alerta.setHeaderText("No se pudo sincronizar el puntaje");
+        alerta.setContentText("El servidor de base de datos no respondió correctamente.");
+        alerta.showAndWait();
+    }
+
     @FXML
-    private void volver() throws IOException {
-        App.setRoot("levels");
+    public void volver() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/patrones/adaptativos/levels.fxml"));
+            Parent root = loader.load();
+            
+            // Reutilizamos el Stage principal definido en la clase App
+            App.getPrimaryStage().getScene().setRoot(root);
+            
+        } catch (IOException e) {
+            System.err.println("Error en la navegación: " + e.getMessage());
+        }
     }
 }
