@@ -15,19 +15,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-/**
- * GameController: Es el "Director de Orquesta" de la pantalla de juego.
- * Su trabajo es conectar lo que el usuario ve (FXML) con la lógica matemática.
- */
 public class GameController {
     
-    // --- ELEMENTOS DE LA INTERFAZ ---
     @FXML private Label patronLabel;
     @FXML private Label statusLabel;
     @FXML private Label puntajeLabel;
@@ -37,11 +35,9 @@ public class GameController {
     @FXML private TableColumn<Intento, String> colRespuesta;
     @FXML private TableColumn<Intento, String> colResultado;
 
-    // --- INSTANCIAS DE LÓGICA Y DATOS ---
-    // Instanciamos la lista y el perfil aquí para que existan durante toda la partida
     private final ObservableList<Intento> lista = FXCollections.observableArrayList();
     private final PerfilJugador perfil = new PerfilJugador();
-    private Reglas reglas; // Se instanciará al recibir los datos
+    private Reglas reglas; 
 
     private int intentos = 0;      
     private int valorActual;       
@@ -52,17 +48,12 @@ public class GameController {
     private String nombreJugador;
     private int nivelSeleccionado;
 
-    /**
-     * initialize(): Configura la parte visual de la tabla al cargar el FXML.
-     */
     @FXML
     public void initialize() {
-        // Configuración de columnas
         colIntento.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getIntento()).asObject());
         colRespuesta.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRespuesta()));
         colResultado.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getResultado()));
         
-        // Formato de colores para la columna de resultado
         colResultado.setCellFactory(column -> new TableCell<Intento, String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -78,32 +69,20 @@ public class GameController {
             }
         });
 
-        // Vinculamos la lista de datos a la tabla y cargamos el primer nivel
         tablaIntentos.setItems(lista);
     }
 
-    /**
-     * Inyecta los datos necesarios e instancia la lógica de reglas.
-     */
     public void inicializarDatos(String nombre, int nivel) {
         this.nombreJugador = nombre;
         this.nivelSeleccionado = nivel;
         this.puntaje = 0;
-        
-        // Instanciamos la lógica de reglas para esta partida
         this.reglas = new Reglas();
         
         actualizarPuntajeUI();
         cargarNivel();
-        
-        System.out.println("Juego iniciado: " + nombreJugador + " - Nivel: " + nivelSeleccionado);
     }
 
-    /**
-     * cargarNivel(): Prepara la pantalla según el nivel (1, 2, 3 o 4).
-     */
     private void cargarNivel() {
-        // Usamos la instancia 'reglas' para obtener los datos del modelo
         valorActual = reglas.obtenerUltimoNumero(nivelSeleccionado);
         reglaActual = 1;
         contadorRegla = 0;
@@ -117,11 +96,8 @@ public class GameController {
         }
     }
 
-    /**
-     * comprobar(): Es el método principal. Se activa al dar clic en "COMPROBAR".
-     */
     @FXML
-    private void comprobar() throws IOException {
+    public void comprobar() throws IOException { // Cambiado a public para evitar advertencias
         String texto = respuestaField.getText().trim();
         if (texto.isEmpty()) return;
 
@@ -129,64 +105,78 @@ public class GameController {
         try {
             respuesta = Integer.parseInt(texto);
         } catch (NumberFormatException e) {
-            // Si el usuario escribió letras o dejó vacío, mostramos error
             statusLabel.setText("Error: Ingresa solo números.");
             return;
         }
 
         intentos++;
-        // Aplicamos la lógica desde la instancia de reglas y perfil
+        
+        // CORRECCIÓN AQUÍ: Se cambió applyRule por aplicarRegla
         int esperado = reglas.aplicarRegla(nivelSeleccionado, valorActual, reglaActual, perfil.getTasaExito());
 
-        // Lógica de validación
         if (respuesta == esperado) {
-            // CASO ACIERTO
             puntaje += 10;
-            perfil.registrarIntento(true); // Actualiza la tasa de éxito en la instancia
+            perfil.registrarIntento(true);
             lista.add(new Intento(intentos, String.valueOf(respuesta), "Correcto"));
             statusLabel.setText("¡Excelente!");
             valorActual = respuesta;
             contadorRegla++;
 
-            // Lógica de progresión
             if (contadorRegla == 3) {
                 if (nivelSeleccionado < 4) {
                     nivelSeleccionado++;
                     statusLabel.setText("¡Subiste de nivel!");
                     cargarNivel();
                 } else {
-                    patronLabel.setText("🎉 ¡Victoria total!");
+                    patronLabel.setText("🎉 ¡VICTORIA TOTAL!");
+                    statusLabel.setText("¡Felicidades, " + nombreJugador + "!");
+                    respuestaField.setDisable(true);
+                    
                     ScoresController.registrarPuntajeFinal(nombreJugador, puntaje, nivelSeleccionado);
+                    mostrarAlertaGanador();
                 }
             }
         } else {
-            // CASO FALLO
             puntaje -= 5;
-            perfil.registrarIntento(false); // Registramos fallo en el perfil
+            perfil.registrarIntento(false);
             lista.add(new Intento(intentos, String.valueOf(respuesta), "Incorrecto"));
             statusLabel.setText("Inténtalo de nuevo.");
         }
         
         actualizarPuntajeUI();
         respuestaField.clear();
-        respuestaField.requestFocus();
+        if (!respuestaField.isDisable()) {
+            respuestaField.requestFocus();
+        }
     }
 
-    /**
-     * actualiza la etiqueta de puntaje en la interfaz
-     */
+    private void mostrarAlertaGanador() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("¡Juego Completado!");
+        alert.setHeaderText("¡ERES UN MAESTRO DE LOS PATRONES!");
+        alert.setContentText("Increíble trabajo, " + nombreJugador + ".\n" +
+                           "Has superado el Nivel 4.\n" +
+                           "Puntaje final: " + puntaje);
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    App.setRoot("scores");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     private void actualizarPuntajeUI() {
         if (puntajeLabel != null) {
             puntajeLabel.setText("Puntaje: " + puntaje);
         }
     }
 
-    /**
-     * Vuelve a la pantalla de selección de niveles
-     */
     @FXML
-    private void volverNiveles() throws IOException {
-        // Guardar progreso antes de salir
+    public void volverNiveles() throws IOException { // Cambiado a public
         ScoresController.registrarPuntajeFinal(nombreJugador, puntaje, nivelSeleccionado);
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/patrones/adaptativos/levels.fxml"));
@@ -198,13 +188,11 @@ public class GameController {
         App.getPrimaryStage().setScene(new Scene(root, 800, 640));
     }
 
-    /**
-     * Resetea los valores para empezar de cero
-     */
     @FXML
-    private void reiniciar() {
+    public void reiniciar() { // Cambiado a public
         this.puntaje = 0;
         this.lista.clear();
+        this.respuestaField.setDisable(false);
         actualizarPuntajeUI();
         cargarNivel();
         statusLabel.setText("Juego reiniciado.");
