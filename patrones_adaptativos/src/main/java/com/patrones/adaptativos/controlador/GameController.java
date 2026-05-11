@@ -14,7 +14,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -41,7 +40,6 @@ public class GameController {
 
     private int intentos = 0;      
     private int valorActual;       
-    private int reglaActual;       
     private int contadorRegla;    
     private int puntaje;           
     
@@ -68,7 +66,6 @@ public class GameController {
                 }
             }
         });
-
         tablaIntentos.setItems(lista);
     }
 
@@ -77,70 +74,92 @@ public class GameController {
         this.nivelSeleccionado = nivel;
         this.puntaje = 0;
         this.reglas = new Reglas();
-        
         actualizarPuntajeUI();
         cargarNivel();
     }
 
     private void cargarNivel() {
         valorActual = reglas.obtenerUltimoNumero(nivelSeleccionado);
-        reglaActual = 1;
-        contadorRegla = 0;
+        contadorRegla = 0; 
         intentos = 0;
+        lista.clear();
         
         if (patronLabel != null) {
-            patronLabel.setText("Adivina el patrón: " + reglas.obtenerPatron(nivelSeleccionado));
+            patronLabel.setText("Serie: " + reglas.obtenerPatron(nivelSeleccionado));
         }
         if (statusLabel != null) {
-            statusLabel.setText("Nivel " + nivelSeleccionado + " activo.");
+            statusLabel.setText("Nivel " + nivelSeleccionado + " activo. ¡Descubre el patrón!");
         }
     }
 
     @FXML
-    public void comprobar() throws IOException { // Cambiado a public para evitar advertencias
+    public void comprobar() throws IOException {
         String texto = respuestaField.getText().trim();
         if (texto.isEmpty()) return;
 
         int respuesta;
         try {
-            respuesta = Integer.parseInt(texto);
+            // Se usa long para validar antes de convertir, evitando errores con números gigantes
+            long validacion = Long.parseLong(texto);
+            if (validacion > Integer.MAX_VALUE || validacion < Integer.MIN_VALUE) {
+                throw new NumberFormatException();
+            }
+            respuesta = (int) validacion;
         } catch (NumberFormatException e) {
-            statusLabel.setText("Error: Ingresa solo números.");
+            statusLabel.setText("Error: Número inválido o demasiado grande.");
             return;
         }
 
         intentos++;
-        
-        // CORRECCIÓN AQUÍ: Se cambió applyRule por aplicarRegla
-        int esperado = reglas.aplicarRegla(nivelSeleccionado, valorActual, reglaActual, perfil.getTasaExito());
+        int esperado = reglas.aplicarRegla(nivelSeleccionado, valorActual, contadorRegla, perfil.getTasaExito());
 
         if (respuesta == esperado) {
             puntaje += 10;
             perfil.registrarIntento(true);
             lista.add(new Intento(intentos, String.valueOf(respuesta), "Correcto"));
-            statusLabel.setText("¡Excelente!");
+            
             valorActual = respuesta;
-            contadorRegla++;
+            contadorRegla++; 
 
-            if (contadorRegla == 3) {
+            String serieVisible = patronLabel.getText().replace("...", "");
+            
+            // --- SISTEMA DE PISTAS AUTOMÁTICAS ---
+            
+            // PISTA NIVEL 1: Inyecta el 18 tras acertar el 20
+            if (nivelSeleccionado == 1 && contadorRegla == 3) {
+                int pistaN1 = respuesta - 2; 
+                patronLabel.setText(serieVisible + ", " + respuesta + ", " + pistaN1 + "...");
+                valorActual = pistaN1;
+                statusLabel.setText("¡Atención! El patrón ha dado un giro...");
+            } 
+            // PISTA NIVEL 4: Inyecta el 17 tras acertar el 22
+            else if (nivelSeleccionado == 4 && contadorRegla == 3) {
+                int pistaN4 = respuesta - 5; 
+                patronLabel.setText(serieVisible + ", " + respuesta + ", " + pistaN4 + "...");
+                valorActual = pistaN4;
+                statusLabel.setText("¡Giro final! Analiza el nuevo número.");
+            } 
+            else {
+                patronLabel.setText(serieVisible + ", " + respuesta + "...");
+                statusLabel.setText("¡Correcto! Sigue así.");
+            }
+
+            // --- CONTROL DE PROGRESO Y NIVELES ---
+            if (contadorRegla >= 6) {
                 if (nivelSeleccionado < 4) {
                     nivelSeleccionado++;
-                    statusLabel.setText("¡Subiste de nivel!");
+                    statusLabel.setText("¡Nivel superado!");
                     cargarNivel();
                 } else {
-                    patronLabel.setText("🎉 ¡VICTORIA TOTAL!");
-                    statusLabel.setText("¡Felicidades, " + nombreJugador + "!");
-                    respuestaField.setDisable(true);
-                    
-                    ScoresController.registrarPuntajeFinal(nombreJugador, puntaje, nivelSeleccionado);
-                    mostrarAlertaGanador();
+                    finalizarJuego();
                 }
             }
+            
         } else {
             puntaje -= 5;
             perfil.registrarIntento(false);
             lista.add(new Intento(intentos, String.valueOf(respuesta), "Incorrecto"));
-            statusLabel.setText("Inténtalo de nuevo.");
+            statusLabel.setText("Incorrecto. Observa los números anteriores.");
         }
         
         actualizarPuntajeUI();
@@ -150,13 +169,19 @@ public class GameController {
         }
     }
 
+    private void finalizarJuego() {
+        patronLabel.setText("🎉 ¡VICTORIA TOTAL!");
+        statusLabel.setText("¡Felicidades, " + nombreJugador + "!");
+        respuestaField.setDisable(true);
+        ScoresController.registrarPuntajeFinal(nombreJugador, puntaje, nivelSeleccionado);
+        mostrarAlertaGanador();
+    }
+
     private void mostrarAlertaGanador() {
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("¡Juego Completado!");
-        alert.setHeaderText("¡ERES UN MAESTRO DE LOS PATRONES!");
-        alert.setContentText("Increíble trabajo, " + nombreJugador + ".\n" +
-                           "Has superado el Nivel 4.\n" +
-                           "Puntaje final: " + puntaje);
+        alert.setTitle("Juego Completado");
+        alert.setHeaderText("¡MAESTRO DE PATRONES!");
+        alert.setContentText("Usuario: " + nombreJugador + "\nPuntaje final: " + puntaje);
 
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
@@ -176,25 +201,21 @@ public class GameController {
     }
 
     @FXML
-    public void volverNiveles() throws IOException { // Cambiado a public
+    public void volverNiveles() throws IOException {
         ScoresController.registrarPuntajeFinal(nombreJugador, puntaje, nivelSeleccionado);
-        
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/patrones/adaptativos/levels.fxml"));
         Parent root = loader.load();
-        
         LevelsController controller = loader.getController();
         controller.recibirNombreJugador(nombreJugador);
-
-        App.getPrimaryStage().setScene(new Scene(root, 800, 640));
+        App.getPrimaryStage().getScene().setRoot(root);
     }
 
     @FXML
-    public void reiniciar() { // Cambiado a public
+    public void reiniciar() {
         this.puntaje = 0;
         this.lista.clear();
         this.respuestaField.setDisable(false);
         actualizarPuntajeUI();
         cargarNivel();
-        statusLabel.setText("Juego reiniciado.");
     }
 }
