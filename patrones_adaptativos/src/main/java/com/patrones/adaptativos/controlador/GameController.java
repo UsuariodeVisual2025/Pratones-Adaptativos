@@ -99,7 +99,6 @@ public class GameController {
 
         int respuesta;
         try {
-            // Se usa long para validar antes de convertir, evitando errores con números gigantes
             long validacion = Long.parseLong(texto);
             if (validacion > Integer.MAX_VALUE || validacion < Integer.MIN_VALUE) {
                 throw new NumberFormatException();
@@ -123,15 +122,22 @@ public class GameController {
 
             String serieVisible = patronLabel.getText().replace("...", "");
             
-            // --- SISTEMA DE PISTAS AUTOMÁTICAS ---
+            // --- SISTEMA DE PISTAS AUTOMÁTICAS (Fase A -> Fase B) ---
             
             // PISTA NIVEL 1: Inyecta el 18 tras acertar el 20
             if (nivelSeleccionado == 1 && contadorRegla == 3) {
                 int pistaN1 = respuesta - 2; 
                 patronLabel.setText(serieVisible + ", " + respuesta + ", " + pistaN1 + "...");
                 valorActual = pistaN1;
-                statusLabel.setText("¡Atención! El patrón ha dado un giro...");
+                statusLabel.setText("¡El patrón cambió! analiza la serie.");
             } 
+            // PISTA NIVEL 2: Inyecta el 258 tras acertar el 128 (Regla: n * 2 + 2)
+            else if (nivelSeleccionado == 2 && contadorRegla == 3) {
+                int pistaN2 = (respuesta * 2) + 2; 
+                patronLabel.setText(serieVisible + ", " + respuesta + ", " + pistaN2 + "...");
+                valorActual = pistaN2;
+                statusLabel.setText("¡El patrón ha evolucionado! Analiza la serie.");
+            }
             // PISTA NIVEL 4: Inyecta el 17 tras acertar el 22
             else if (nivelSeleccionado == 4 && contadorRegla == 3) {
                 int pistaN4 = respuesta - 5; 
@@ -144,11 +150,11 @@ public class GameController {
                 statusLabel.setText("¡Correcto! Sigue así.");
             }
 
-            // --- CONTROL DE PROGRESO Y NIVELES ---
+            // --- CONTROL DE PROGRESO ---
             if (contadorRegla >= 6) {
                 if (nivelSeleccionado < 4) {
                     nivelSeleccionado++;
-                    statusLabel.setText("¡Nivel superado!");
+                    statusLabel.setText("¡Nivel superado! Cargando siguiente...");
                     cargarNivel();
                 } else {
                     finalizarJuego();

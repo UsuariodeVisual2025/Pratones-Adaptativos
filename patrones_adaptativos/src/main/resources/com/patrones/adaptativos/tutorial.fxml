@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="640.0" prefWidth="800.0" 
-            style="-fx-background-color: linear-gradient(to bottom right, #2c3e50 0%, #000000 100%);" 
+            style="-fx-background-color: linear-gradient(to bottom right, #1a2a6c, #b21f1f, #fdbb2d);" 
             xmlns="http://javafx.com/javafx/17" 
             xmlns:fx="http://javafx.com/fxml/1" 
             fx:controller="com.patrones.adaptativos.controlador.LevelsController">
@@ -20,16 +20,17 @@
                 <font>
                     <Font name="System Bold" size="48.0" />
                 </font>
+                <style>-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);</style>
             </Label>
 
-            <VBox alignment="TOP_LEFT" spacing="15.0" maxWidth="600.0" 
-                  style="-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 20; -fx-padding: 30;">
+            <VBox alignment="TOP_LEFT" spacing="15.0" maxWidth="650.0" 
+                  style="-fx-background-color: rgba(0,0,0,0.6); -fx-background-radius: 20; -fx-padding: 30; -fx-border-color: rgba(255,255,255,0.3); -fx-border-radius: 20;">
                 
-                <Label text="1. Se te presentará una secuencia numérica lógica." textFill="WHITE" wrapText="true">
-                    <font><Font size="18.0" /></font>
+                <Label text="1. Analiza la secuencia numérica inicial." textFill="WHITE" wrapText="true">
+                    <font><Font name="System Bold" size="19.0" /></font>
                 </Label>
                 
-                <Label text="2. Deberás adivinar cuál es el siguiente número del patrón." textFill="WHITE" wrapText="true">
+                <Label text="2. Adivina el patrón y escribe el número siguiente." textFill="WHITE" wrapText="true">
                     <font><Font size="18.0" /></font>
                 </Label>
                 
@@ -37,14 +38,17 @@
                     <font><Font size="18.0" /></font>
                 </Label>
                 
-                <Label text="4. Si logras 3 aciertos seguidos, ¡subes de nivel!" textFill="WHITE" wrapText="true">
+                <Label text="4. ¡CUIDADO! A mitad de nivel el patrón cambiará y recibirás una pista automática." textFill="#3498db" wrapText="true">
+                    <font><Font name="System Bold" size="18.0" /></font>
+                </Label>
+
+                <Label text="5. Completa los 6 aciertos para superar el nivel actual." textFill="WHITE" wrapText="true">
                     <font><Font size="18.0" /></font>
                 </Label>
             </VBox>
 
-            <!-- Este botón ahora llama correctamente al método en LevelsController -->
-            <Button onAction="#switchToLevels" prefHeight="60.0" prefWidth="280.0" text="¡ENTENDIDO!" 
-                    style="-fx-background-color: #3498db; -fx-background-radius: 30; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20px; -fx-cursor: hand;" />
+            <Button onAction="#switchToLevels" prefHeight="60.0" prefWidth="300.0" text="¡ESTOY LISTO!" 
+                    style="-fx-background-color: #2ecc71; -fx-background-radius: 30; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 22px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 5);" />
         
         </VBox>
     </center>
